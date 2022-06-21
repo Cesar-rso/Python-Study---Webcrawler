@@ -3,12 +3,12 @@ from bs4 import BeautifulSoup                #Biblioteca para varredura de itens
 import operator
 
 #Função principal que cria lista de palavras
-def start(url, tag='a', id='class', idtitle='post-title'):
+def start(url, tag='a', arg_='class', argvalue='post-title'):
     word_list = []                                           #Variavel para armazenar a lista de palavras
     source_code = requests.get(url).text                     #Variavel onde se armazena o codigo html da url
     soup = BeautifulSoup(source_code, 'html.parser')         #Convertendo o codigo html para um objeto BeautifulSoup
 
-    for post_text in soup.findAll(tag, {id: idtitle}):       #Procurando no 'objeto' html o texto de acordo com os parametros passados (qual tag, id da tag que quer procurar, etc)
+    for post_text in soup.findAll(tag, {arg_: argvalue}):       #Procurando no 'objeto' html o texto de acordo com os parametros passados (qual tag, id da tag que quer procurar, etc)
         content = post_text.string                           #Copiando somente o texto e deixando de fora headers e outros códigos html
 
         words = str(content).lower().split()                 #Deixando tudo em letra minuscula e separando palavra por palavra, em vez de ter um unico bloco de texto
@@ -41,11 +41,11 @@ def create_dictionary(clean_word_list):
     for key, value in sorted(word_count.items(), key=operator.itemgetter(1)):  #Exibe na tela a lista de palavras, ordenada da menos usada para a mais usada
         print(key, value)
 
+if __name__ == '__main__':
+    url = input('Informe o site para o webcrawler: ')
+    tag = input('Informe a tag para o webcrawler: ')
+    argid = input('Informe um parametro da tag para o webcrawler: ')
+    argvalue = input('Informe o valor do parametro para o webcrawler: ')
 
-url = input('Informe o site para o webcrawler: ')
-tag = input('Informe a tag para o webcrawler: ')
-tagid = input('Informe uma tag id para o webcrawler: ')
-tagtitle = input('Informe o valor da tag id para o webcrawler: ')
-
-start(url, tag, tagid, tagtitle)
+    start(url, tag, argid, argvalue)
 
